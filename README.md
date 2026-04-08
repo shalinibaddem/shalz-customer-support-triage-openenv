@@ -1,3 +1,13 @@
+---
+title: shalz-customer-support-triage-openenv
+emoji: "📞"
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+app_port: 7860
+---
+
 # Customer Support Triage OpenEnv
 
 Customer Support Triage OpenEnv is a deterministic benchmark that simulates the work of a SaaS support specialist handling inbound tickets under routing, urgency, and policy constraints. The benchmark emphasizes operational support behavior rather than one-shot text classification.
