@@ -1,0 +1,24 @@
+name: customer-support-triage-openenv
+version: 0.1.0
+description: Deterministic multi-step SaaS customer support triage benchmark with routing, policy, and response constraints.
+entrypoint: customer_support_openenv.environment:CustomerSupportTriageEnv
+python_version: "3.11"
+tags:
+  - openenv
+  - support
+  - triage
+  - benchmark
+  - customer-support
+task_ids:
+  - billing_refund_easy
+  - account_access_medium
+  - enterprise_policy_hard
+metadata:
+  domain: saas_support
+  difficulty_levels:
+    billing_refund_easy: easy
+    account_access_medium: medium
+    enterprise_policy_hard: hard
+  max_steps: 6
+  reward_type: dense_shaped_plus_terminal_bonus
+  deterministic_grading: true

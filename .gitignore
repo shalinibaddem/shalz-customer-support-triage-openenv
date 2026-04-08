@@ -1,0 +1,6 @@
+.venv/
+.pytest_cache/
+__pycache__/
+*.pyc
+baseline_results.json
+scripts/baseline_results.json
