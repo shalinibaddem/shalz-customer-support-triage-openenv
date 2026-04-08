@@ -16,10 +16,10 @@ from customer_support_openenv.environment import CustomerSupportTriageEnv
 from customer_support_openenv.models import Action, Observation
 
 
-LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME", "")
+LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME")
 API_BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
-HF_TOKEN = os.getenv("HF_TOKEN", "").strip()
+HF_TOKEN = os.getenv("HF_TOKEN")
 BENCHMARK = "customer-support-triage-openenv"
 MAX_STEPS = 6
 
@@ -44,7 +44,7 @@ def log_start(task: str, env: str, model: str) -> None:
 
 
 def log_step(step: int, action: str, reward: float, done: bool, error: str | None) -> None:
-    error_value = (error or "null").replace("\n", " ").replace("\r", " ")
+    error_value = error or "null"
     print(
         f"[STEP] step={step} action={action} reward={reward:.2f} "
         f"done={format_bool(done)} error={error_value}",
@@ -55,7 +55,7 @@ def log_step(step: int, action: str, reward: float, done: bool, error: str | Non
 def log_end(success: bool, steps: int, score: float, rewards: list[float]) -> None:
     rewards_str = ",".join(f"{reward:.2f}" for reward in rewards)
     print(
-        f"[END] success={format_bool(success)} steps={steps} score={score:.2f} rewards={rewards_str}",
+        f"[END] success={format_bool(success)} steps={steps} score={score:.3f} rewards={rewards_str}",
         flush=True,
     )
 
@@ -80,9 +80,10 @@ def build_user_prompt(observation: Observation) -> str:
 
 
 def create_client() -> tuple[OpenAI, str]:
-    if not HF_TOKEN:
+    token = (HF_TOKEN or "").strip()
+    if not token:
         raise RuntimeError("Missing required environment variable: HF_TOKEN")
-    client = OpenAI(base_url=API_BASE_URL, api_key=HF_TOKEN)
+    client = OpenAI(base_url=API_BASE_URL, api_key=token)
     return client, MODEL_NAME
 
 
