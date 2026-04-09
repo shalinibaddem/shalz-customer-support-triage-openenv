@@ -5,6 +5,8 @@ from typing import Iterable
 
 from .models import Action, EnvironmentState, TaskRubric
 
+SCORE_EPSILON = 0.001
+
 
 def normalize_text(value: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9\s]", " ", value.lower())).strip()
@@ -188,7 +190,12 @@ def grade_task(state: EnvironmentState, rubric: TaskRubric) -> dict[str, float]:
         breakdown[dimension] * weight for dimension, weight in applicable_weights.items()
     )
     total_weight = sum(applicable_weights.values()) or 1.0
-    breakdown["final_score"] = round(weighted_sum / total_weight, 4)
+    raw_final_score = weighted_sum / total_weight
+    breakdown["raw_final_score"] = round(raw_final_score, 4)
+    breakdown["final_score"] = round(
+        min(max(raw_final_score, SCORE_EPSILON), 1.0 - SCORE_EPSILON),
+        4,
+    )
     return breakdown
 
 

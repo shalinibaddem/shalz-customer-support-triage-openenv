@@ -22,6 +22,7 @@ MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
 HF_TOKEN = os.getenv("HF_TOKEN")
 BENCHMARK = "customer-support-triage-openenv"
 MAX_STEPS = 6
+SUCCESS_SCORE_THRESHOLD = 0.1
 
 SYSTEM_PROMPT = """You are operating a deterministic customer support triage benchmark.
 Return exactly one JSON object with these keys in this order:
@@ -269,7 +270,7 @@ def run() -> dict[str, Any]:
                 grader_breakdown = {}
 
             score = max(0.0, min(1.0, score))
-            success = score > 0.0 and last_error is None
+            success = score >= SUCCESS_SCORE_THRESHOLD and last_error is None
             results.append(
                 {
                     "task_id": task_id,

@@ -36,7 +36,7 @@ def test_easy_perfect_trajectory_gets_full_score() -> None:
             ),
         ],
     )
-    assert score == 1.0
+    assert 0.99 < score < 1.0
 
 
 def test_wrong_trajectory_scores_low() -> None:
@@ -55,7 +55,7 @@ def test_wrong_trajectory_scores_low() -> None:
             ),
         ],
     )
-    assert score <= 0.2
+    assert 0.0 < score <= 0.2
 
 
 def test_medium_partial_success_is_intermediate() -> None:
